@@ -1,2 +1,3 @@
-include ':vpager', ':sample'
+include ':vpager'
+include ':sample'
 rootProject.name='VPager'
