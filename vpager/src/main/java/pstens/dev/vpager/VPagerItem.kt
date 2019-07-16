@@ -11,7 +11,5 @@ abstract class VPagerItem<T>(val items: List<T>) {
 
     abstract fun shouldShow(): Boolean
 
-    abstract fun filterBySearchQuery(query: String): List<T>
-
     abstract fun getAdapter(): SearchableAdapter
 }

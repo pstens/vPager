@@ -9,10 +9,6 @@ import pstens.dev.vpager.VPagerItem
 
 class TextItem(items: List<String>) : VPagerItem<String>(items) {
 
-    override fun filterBySearchQuery(query: String) = items.filter {
-        it.contains(query, ignoreCase = true)
-    }
-
     override fun getAdapter(): SearchableAdapter = object : SearchableAdapter() {
         override fun applySearchQuery(query: String) {
         }

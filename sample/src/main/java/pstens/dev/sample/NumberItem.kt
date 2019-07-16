@@ -27,10 +27,6 @@ class NumberItem(items: List<Int>) : VPagerItem<Int>(items) {
 
     }
 
-    override fun filterBySearchQuery(query: String) = items.filter {
-        "$it".contains(query, ignoreCase = true)
-    }
-
     override fun getPageTitle(): String = "NumberItem (${items.size})"
 
     override fun shouldShow(): Boolean = true
