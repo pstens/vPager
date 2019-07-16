@@ -12,7 +12,7 @@ class VPagerAdapter : PagerAdapter() {
 
     private val items: MutableList<VPagerItem<Any>> = mutableListOf()
     private var shownItems: List<VPagerItem<Any>> = items.toList()
-    private var itemToAdapter: MutableMap<VPagerItem<Any>, Adapter> = mutableMapOf()
+    private var itemToAdapter: MutableMap<VPagerItem<Any>, SearchableAdapter> = mutableMapOf()
 
     internal fun addItem(pagerItem: VPagerItem<Any>) {
         items.add(pagerItem)
@@ -27,45 +27,20 @@ class VPagerAdapter : PagerAdapter() {
 
     override fun isViewFromObject(view: View, o: Any): Boolean = (view == o)
 
-    override fun getCount(): Int = items.size
+    override fun getCount(): Int = shownItems.size
 
-    override fun getPageTitle(position: Int): String = items[position].getPageTitle()
+    override fun getPageTitle(position: Int): String = shownItems[position].getPageTitle()
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val item = shownItems[position]
         inflater = inflater ?: LayoutInflater.from(container.context)
-        return (inflater!!.inflate(R.layout.list, container, false) as RecyclerView).also { rv ->
-            val adapter = Adapter(items[position])
-            itemToAdapter[items[position]] = adapter
-            rv.adapter = adapter
-            container.addView(rv)
-        }
+        val rv = inflater!!.inflate(R.layout.list, container, false) as RecyclerView
+        rv.adapter = item.getAdapter().also { itemToAdapter[item] = it }
+        container.addView(rv)
+        return rv
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, o: Any) {
         container.removeView(o as View)
-    }
-}
-
-private class Adapter(val pagerItem: VPagerItem<Any>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var displayedItems: List<Any> = pagerItem.items
-
-    private var inflater: LayoutInflater? = null
-
-    fun applySearchQuery(query: String) {
-        displayedItems = pagerItem.filterBySearchQuery(query)
-        notifyDataSetChanged()
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        inflater = inflater ?: LayoutInflater.from(parent.context)
-        return pagerItem.createViewHolder(parent, inflater!!)
-    }
-
-    override fun getItemCount(): Int = displayedItems.size
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        pagerItem.bindToViewHolder(displayedItems[position], holder)
     }
 }

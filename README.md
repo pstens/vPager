@@ -27,20 +27,10 @@ class NumberItem(items: List<Int>) : VPagerItem<Int>(items) {
         "$it".contains(query, ignoreCase = true)
     }
 
+    override fun getAdapter(): SearchableAdapter = NumberAdapter(items)
+
     override fun getPageTitle(): String = "NumberItem (${items.size})"
 
     override fun shouldShow(): Boolean = true
-
-    override fun createViewHolder(
-        parent: ViewGroup,
-        inflater: LayoutInflater
-    ): RecyclerView.ViewHolder {
-        val view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false)
-        return object : RecyclerView.ViewHolder(view) {}
-    }
-
-    override fun bindToViewHolder(item: String, holder: RecyclerView.ViewHolder) {
-        holder.itemView.findViewById<TextView>(android.R.id.text1).text = "$item"
-    }
 }
 ```
