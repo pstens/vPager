@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val sectionsPagerAdapter = vPagerAdapter {
-            addItem(NumberItem(listOf(1, 2, 3)))
+            addItem(NumberItem((0..100).toList()))
             addItem(NumberItem(listOf(4, 5, 6)))
             addItem(TextItem(listOf("Lorem", "Ipsum", "Dolor")))
         }
